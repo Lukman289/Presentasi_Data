@@ -312,6 +312,159 @@ Future<List<Pizza>> readJsonFile() async {
 
 ## C. Praktikum 3: Saving data simply with SharedPreferences
 
+### 1. Gunakan project pada pertemuan 11 bernama books. Pertama, tambahkan ketergantungan pada shared_preferences. Dari Terminal Anda, ketikkan perintah berikut
+
+![image for practicum 3 step 1](images/p3-1.png)
+
+### 2. Untuk memperbarui dependensi dalam proyek Anda, jalankan perintah flutter pub get dari jendela Terminal.
+
+![image for practicum 3 step 2](images/p3-1.png)
+
+### 3. Di bagian atas file main.dart, impor shared_preferences:
+
+```dart
+import 'dart:async';
+import 'package:books/geolocation.dart';
+import 'package:books/navigation_dialog.dart';
+import 'package:books/navigation_first.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+import 'package:async/async.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+```
+
+### 4. Di bagian atas kelas _MyHomePageState, buat variabel status integer baru bernama appCounter:
+
+```dart
+int appCounter = 0;
+
+class _FuturePageState extends State<FuturePage>
+```
+
+### 5. Dalam kelas _MyHomePageState, buat metode asinkron baru yang disebut readAndWritePreferences():
+
+```dart
+class _FuturePageState extends State<FuturePage> {
+  String result = '';
+  late Completer completer;
+
+  Future readAndWritePreference() async {}
+```
+
+### 6. Di dalam metode readAndWritePreference, buatlah sebuah instance dari SharedPreferences:
+
+```dart
+Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+}
+```
+
+### 7. Setelah membuat instance preferensi, kita membuat kode yang mencoba baca nilai kunci appCounter. Jika nilainya nol, setel ke 0; lalu naikkan nilainya:
+
+```dart
+Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+}
+```
+
+### 8. Setelah itu, atur nilai kunci appCounter di preferensi ke nilai baru:
+
+```dart
+Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+    await prefs.setInt('appCounter', appCounter);
+}
+```
+
+### 9. Memperbarui nilai status appCounter:
+
+```dart
+Future readAndWritePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    appCounter = prefs.getInt('appCounter') ?? 0;
+    appCounter++;
+    await prefs.setInt('appCounter', appCounter);
+    setState(() {
+      appCounter = appCounter;
+    });
+}
+```
+
+### 10. Pada metode initState di kelas _MyHomePageState, panggil metode readAndWritePreference()dengan kode yang dicetak tebal:
+
+```dart
+@override
+void initState() {
+    super.initState();
+    readAndWritePreference();
+}
+```
+
+### 11. Dalam metode build, tambahkan kode berikut ini di dalam widget Container:
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Back from the Future (Lukman)'),
+      ),
+      body: Center (
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('You have opened the app $appCounter times.'),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Reset counter'),
+            ),
+          ],
+        ),
+      ),
+    );
+}
+```
+
+### 12. Jalankan aplikasi. Saat pertama kali membukanya, Anda akan melihat layar yang mirip dengan yang berikut ini:
+
+![image for practicum 4 step 12](images/p3-12.png)
+
+### 13. Tambahkan metode baru ke kelas _MyHomePageState yang disebut deletePreference(), yang akan menghapus nilai yang disimpan:
+
+```dart
+Future deletePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      appCounter = 0;
+    });
+}
+```
+
+### 14. Dari properti onPressed dari widget ElevatedButton di metode build(), memanggil metodedeletePreference(), dengan kode di cetak tebal:
+
+```dart
+ElevatedButton(
+    onPressed: () {
+        deletePreference();
+    },
+    child: const Text('Reset counter'),
+),
+```
+
+### 15. Jalankan aplikasi lagi. Sekarang, saat Anda menekan tombol Reset penghitung, nilai appCounter akan dihapus
+
+![image for practicum 3 step 15](images/p3-15.gif)
+
 ## D. Praktikum 4: Accessing the filesystem, part 1: path_provider
 ## E. Praktikum 5: Accessing the filesystem, part 2: Working with directories
 ## F. Praktikum 6: Using secure storage to store data
