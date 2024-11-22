@@ -466,5 +466,102 @@ ElevatedButton(
 ![image for practicum 3 step 15](images/p3-15.gif)
 
 ## D. Praktikum 4: Accessing the filesystem, part 1: path_provider
+
+### 1. menambahkan dependency yang relevan ke file pubspec.yaml. Tambahkan path_provider dengan mengetikkan perintah ini dari Terminal Anda:
+
+```dart
+dependencies:
+  flutter:
+    sdk: flutter
+  path_provider: ^2.0.0
+```
+
+### 2. Di bagian atas file main.dart, tambahkan impor path_provider:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+```
+
+### 3. Di bagian atas kelas _MyHomePageState, tambahkan variabel State yang akan kita gunakan untuk memperbarui antarmuka pengguna:
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+  String documentsPath = '';
+  String tempPath = '';
+```
+
+### 4. Masih dalam kelas _MyHomePageState, tambahkan metode untuk mengambil direktori temporary dan dokumen:
+
+```dart
+Future getPaths() async {
+    final docDir = await getApplicationDocumentsDirectory();
+    final tempDir = await getTemporaryDirectory();
+    setState(() {
+      documentsPath = docDir.path;
+      tempPath = tempDir.path;
+    });
+}
+```
+
+### 5. Pada metode initState dari kelas _MyHomePageState, panggil metode getPaths:
+
+```dart
+@override
+void initState() {
+    super.initState();
+    getPaths();
+}
+```
+
+### 6. Pada metode build _MyHomePageState, buat UI dengan dua widget Teks yang menunjukkan path yang diambil:
+
+```dart
+@override
+Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('Doc path: $documentsPath'),
+          Text('Temp path: $tempPath'),
+        ],
+      )
+    );
+}
+```
+
+### 7. Jalankan aplikasi. Anda akan melihat layar yang terlihat seperti berikut ini:
+
+![image for practicum 4 step 7](images/p4-7.png)
+
 ## E. Praktikum 5: Accessing the filesystem, part 2: Working with directories
+
+### 1. Di bagian atas berkas main.dart, impor pustaka dart:io:
+
+```dart
+
+```
+
+### 2. Di bagian atas kelas _MyHomePageState, di file main.dart, buat dua variabel State baru untuk file dan isinya:
+
+```dart
+
+```
+
+### 3. Masih dalam kelas MyHomePageState, buat metode baru bernama writeFile dan gunakan kelas File dari pustaka dart:io untuk membuat file baru:
+
+```dart
+
+```
+
+### 4. Dalam metode initState, setelah memanggil metode getPaths, dalam metode then, buat sebuah file dan panggil metode writeFile:
+### 5. Buat metode untuk membaca file:
+### 6. Dalam metode build, di widget Column, perbarui antarmuka pengguna dengan ElevatedButton. Ketika pengguna menekan tombol, tombol akan mencoba membaca konten file dan menampilkannya di layar, cek kode cetak tebal:
+### 7. Jalankan aplikasi dan tekan tombol Baca File. Di bawah tombol tersebut, Anda akan melihat teks Margherita, Capricciosa, Napoli, seperti yang ditunjukkan pada tangkapan layar berikut:
+
 ## F. Praktikum 6: Using secure storage to store data
