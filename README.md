@@ -260,7 +260,55 @@ Widget build(BuildContext context) {
 
 ## B. Praktikum 2: Reading the JSON file
 
+### 1. Tambahkan metode baru ke kelas Pizza, di file pizza.dart, yang disebut toJson. Ini akan mengembalikan sebuah Map<String, dynamic> dari objek:
 
+```dart
+Map<String, dynamic> toJson() {
+    return {
+        'id': id,
+        'pizzaName': pizzaName,
+        'description': description,
+        'price': price,
+        'imageUrl': imageUrl,
+    };
+}
+```
+
+### 2. Setelah Anda memiliki sebuah Map, Anda dapat menserialisasikannya kembali ke dalam string JSON. Tambahkan metode baru di di bagian bawah kelas _MyHomePageState, di dalam file main.dart, yang disebut convertToJSON:
+
+```dart
+class _MyHomePageState extends State<MyHomePage> {
+    String pizzaString = '';
+  
+    String convertToJSON(List<Pizza> pizzas) {return jsonEncode(pizzas.map((pizza) => jsonEncode(pizza)).toList());
+}
+```
+
+### 3. Metode ini mengubah objek List of Pizza kembali menjadi string Json dengan memanggil metode jsonEncode lagi di pustaka dart_convert.
+
+### 4. Terakhir, mari panggil metode tersebut dan cetak string JSON di Debug Console. Tambahkan kode berikut ke metode readJsonFile, tepat sebelum mengembalikan List myPizzas:
+
+```dart
+Future<List<Pizza>> readJsonFile() async {
+    String myString = await DefaultAssetBundle.of(context).loadString('assets/pizzalist.json');
+    List pizzaMapList = jsonDecode(myString);
+    List<Pizza> myPizzas = [];
+    for (var pizza in pizzaMapList) {
+      Pizza myPizza = Pizza.fromJson(pizza);
+      myPizzas.add(myPizza);
+    }
+    // setState(() {
+    //   pizzaString = myString;
+    // });
+    String json = convertToJSON(myPizzas);
+    print(json);
+    return myPizzas;
+}
+```
+
+### 5. Jalankan aplikasi. Anda akan melihat string JSON dicetak, seperti yang ditunjukkan pada gambarberikut:
+
+![image for practicum 2 step 5](images/p2-5.png)
 
 ## C. Praktikum 3: Saving data simply with SharedPreferences
 
